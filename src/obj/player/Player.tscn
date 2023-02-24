@@ -1,0 +1,109 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://assets/tex/obj/player/ghoul.png" type="Texture" id=1]
+[ext_resource path="res://src/obj/player/Player.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5, 7 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 80, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 96, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 112, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 128, 0, 16, 32 )
+
+[sub_resource type="StreamTexture" id=6]
+load_path = "res://.import/ghoul.png-fb43efc0a9482a9ce082921305063e87.stex"
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = SubResource( 6 )
+region = Rect2( 64, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 1 )
+region = Rect2( 16, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = SubResource( 6 )
+region = Rect2( 48, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = SubResource( 6 )
+region = Rect2( 0, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = SubResource( 6 )
+region = Rect2( 16, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = SubResource( 6 )
+region = Rect2( 32, 0, 16, 32 )
+
+[sub_resource type="SpriteFrames" id=13]
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
+"loop": true,
+"name": "Dead",
+"speed": 30.0
+}, {
+"frames": [ SubResource( 7 ) ],
+"loop": true,
+"name": "Fall",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 14 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 9 ) ],
+"loop": true,
+"name": "Jump",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 11 ), SubResource( 10 ), SubResource( 12 ), SubResource( 10 ) ],
+"loop": true,
+"name": "Walk",
+"speed": 15.0
+} ]
+
+[node name="Player" type="KinematicBody2D"]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -7 )
+shape = SubResource( 1 )
+
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2( 0, -9 )
+current = true
+zoom = Vector2( 0.5, 0.5 )
+limit_left = 0
+limit_top = 0
+limit_right = 2176
+limit_bottom = 0
+limit_smoothed = true
+smoothing_speed = 0.0
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -15 )
+frames = SubResource( 13 )
+animation = "Idle"
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="barrel_jump" from="." to="." method="_on_Player_barrel_jump"]
+[connection signal="killed" from="." to="." method="_on_Player_killed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
